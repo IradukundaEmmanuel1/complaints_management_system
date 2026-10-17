@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Faculties{% endblock %}
+{% block page_title %}Faculties{% endblock %}
+{% block page_actions %}
+  <a href="{% url 'accounts:faculty_create' %}" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> Add Faculty</a>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body p-0 table-responsive">
+    <table class="table table-striped table-hover table-compact mb-0">
+      <thead><tr><th>Code</th><th>Faculty</th><th>Campus</th><th>Departments</th><th class="actions">Actions</th></tr></thead>
+      <tbody>
+        {% for f in faculties %}
+        <tr>
+          <td><strong>{{ f.code }}</strong></td>
+          <td>{{ f.name }}</td>
+          <td>{{ f.get_campus_display }}</td>
+          <td>{{ f.num_departments }}</td>
+          {% url 'accounts:faculty_detail' f.pk as view_url %}
+          {% url 'accounts:faculty_update' f.pk as edit_url %}
+          {% url 'accounts:faculty_delete' f.pk as delete_url %}
+          {% include "actions.html" %}
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No faculties yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<!-- register.html: student sign-up page (AdminLTE register-box design) -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Account | AUCA Complaints</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="{% static 'adminlte/plugins/fontawesome-free/css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'adminlte/dist/css/adminlte.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+</head>
+<body class="hold-transition register-page">
+<div class="register-box" style="width: 520px; max-width: 95%;">
+  <div class="register-logo"><i class="fas fa-university" style="color:#1F3A68"></i> <b style="color:#1F3A68">AUCA</b> Complaints</div>
+  <div class="card">
+    <div class="card-body register-card-body">
+      <p class="login-box-msg">Create your student account</p>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+        <div class="row">
+          {% for field in form %}
+          <div class="col-md-6 form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<small class="text-danger">{{ field.errors|join:" " }}</small>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+      <p class="mt-3 mb-0 text-center">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+    </div>
+  </div>
+</div>
+<script src="{% static 'adminlte/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'adminlte/dist/js/adminlte.min.js' %}"></script>
+</body>
+</html>

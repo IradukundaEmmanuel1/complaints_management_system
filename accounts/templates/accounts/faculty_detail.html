@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ faculty.name }}{% endblock %}
+{% block page_title %}{{ faculty }}{% endblock %}
+{% block page_actions %}
+  <a href="{% url 'accounts:faculty_update' faculty.pk %}" class="btn btn-warning"><i class="fas fa-edit mr-1"></i> Edit</a>
+  <a href="{% url 'accounts:faculty_delete' faculty.pk %}" class="btn btn-danger"><i class="fas fa-trash mr-1"></i> Delete</a>
+{% endblock %}
+
+{% block content %}
+<p class="text-muted"><i class="fas fa-map-marker-alt mr-1"></i> {{ faculty.get_campus_display }} &middot; Code {{ faculty.code }}</p>
+<div class="card">
+  <div class="card-header"><h3 class="card-title">Departments</h3></div>
+  <div class="card-body p-0">
+    <table class="table table-striped table-compact mb-0">
+      <thead><tr><th>Department</th><th>Students</th></tr></thead>
+      <tbody>
+        {% for d in departments %}
+        <tr><td><a href="{% url 'accounts:department_detail' d.pk %}">{{ d.name }}</a></td><td>{{ d.num_students }}</td></tr>
+        {% empty %}<tr><td colspan="2">No departments yet.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<a href="{% url 'accounts:faculty_list' %}" class="btn btn-default"><i class="fas fa-arrow-left mr-1"></i> Back to faculties</a>
+{% endblock %}

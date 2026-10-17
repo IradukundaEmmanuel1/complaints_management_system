@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Access denied{% endblock %}
+{% block page_title %}Access denied{% endblock %}
+{% block content %}
+<div class="error-page mt-5">
+  <h2 class="headline text-warning">403</h2>
+  <div class="error-content">
+    <h3><i class="fas fa-lock text-warning"></i> This page is for staff only.</h3>
+    <p>You do not have permission to open this page. <a href="{% url 'dashboard' %}">Return to the dashboard</a>.</p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,2 @@
+{# Coloured badge for a complaint status #}
+<span class="badge {% if status == 'RESOLVED' %}bg-success{% elif status == 'IN_REVIEW' %}bg-primary{% elif status == 'REJECTED' %}bg-danger{% else %}bg-secondary{% endif %}">{{ label }}</span>

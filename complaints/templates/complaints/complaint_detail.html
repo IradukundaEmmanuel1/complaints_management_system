@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}{{ complaint.reference }}{% endblock %}
+{% block page_title %}{{ complaint.reference }}{% endblock %}
+{% block page_actions %}
+  {% if can_change %}
+    <a href="{% url 'complaints:complaint_update' complaint.pk %}" class="btn btn-warning"><i class="fas fa-edit mr-1"></i> {% if user.is_staff %}Manage{% else %}Edit{% endif %}</a>
+    <a href="{% url 'complaints:complaint_delete' complaint.pk %}" class="btn btn-danger"><i class="fas fa-trash mr-1"></i> Delete</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card card-primary card-outline">
+      <div class="card-header">
+        <h3 class="card-title"><strong>{{ complaint.title }}</strong></h3>
+        <div class="card-tools">{% include "complaints/status_badge.html" with status=complaint.status label=complaint.get_status_display %}</div>
+      </div>
+      <div class="card-body">
+        <p style="white-space: pre-line;">{{ complaint.description }}</p>
+        {% for tag in complaint.tags.all %}<span class="badge bg-light border mr-1"><i class="fas fa-tag"></i> {{ tag.name }}</span>{% endfor %}
+      </div>
+      {% if complaint.resolution %}
+      <div class="card-footer {% if complaint.status == 'REJECTED' %}bg-light{% endif %}">
+        <strong><i class="fas fa-check-circle text-success mr-1"></i>{% if complaint.status == 'REJECTED' %}Reason for rejection{% else %}Resolution{% endif %}:</strong> {{ complaint.resolution }}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Conversation between the student and the university -->
+    <div class="card">
+      <div class="card-header"><h3 class="card-title"><i class="fas fa-comments mr-1"></i> Conversation</h3></div>
+      <div class="card-body bg-light">
+        {% for r in responses %}
+        <div class="reply {% if r.author.is_staff %}staff{% endif %}">
+          <div class="meta"><strong>{{ r.author.get_full_name }}</strong>{% if r.author.is_staff %} <span class="badge bg-theme-accent">AUCA staff</span>{% endif %} &middot; {{ r.created_at|date:"j M Y, H:i" }}</div>
+          <div style="white-space: pre-line;">{{ r.message }}</div>
+        </div>
+        {% empty %}
+        <p class="text-muted mb-2">No replies yet.</p>
+        {% endfor %}
+        <form method="post" class="mt-3">
+          {% csrf_token %}
+          {{ form.message }}
+          {% if form.message.errors %}<small class="text-danger">{{ form.message.errors|join:" " }}</small>{% endif %}
+          <button type="submit" class="btn btn-primary btn-sm mt-2"><i class="fas fa-paper-plane mr-1"></i> Send reply</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <ul class="list-group list-group-unbordered mb-0">
+          <li class="list-group-item"><b>Student</b> <span class="float-right">{{ complaint.student.user.get_full_name }}</span></li>
+          <li class="list-group-item"><b>Reg. number</b> <span class="float-right">{{ complaint.student.reg_number }}</span></li>
+          <li class="list-group-item"><b>Department</b> <span class="float-right">{{ complaint.student.department }}</span></li>
+          <li class="list-group-item"><b>Category</b> <span class="float-right">{{ complaint.category.name }}</span></li>
+          <li class="list-group-item"><b>Priority</b> <span class="float-right">{% include "complaints/priority_badge.html" with priority=complaint.priority label=complaint.get_priority_display %}</span></li>
+          <li class="list-group-item"><b>Handled by</b> <span class="float-right">{{ complaint.assigned_to.user.get_full_name|default:"Not assigned" }}</span></li>
+          <li class="list-group-item"><b>Submitted</b> <span class="float-right">{{ complaint.created_at|date:"j M Y" }}</span></li>
+          <li class="list-group-item"><b>{% if complaint.is_open %}Open for{% else %}Closed after{% endif %}</b> <span class="float-right">{{ complaint.days_open }} days{% if complaint.is_overdue %} <span class="badge bg-warning">Overdue</span>{% endif %}</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<a href="{% url 'complaints:complaint_list' %}" class="btn btn-default"><i class="fas fa-arrow-left mr-1"></i> Back to complaints</a>
+{% endblock %}

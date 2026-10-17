@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Staff{% endblock %}
+{% block page_title %}Staff Handling Complaints{% endblock %}
+
+{% block content %}
+<p class="text-muted">Staff accounts are created by the administrator in Django Admin.</p>
+<div class="card">
+  <div class="card-body p-0 table-responsive">
+    <table class="table table-striped table-hover table-compact mb-0">
+      <thead><tr><th>Staff No.</th><th>Name</th><th>Position</th><th>Office</th><th>Assigned complaints</th><th class="actions">Actions</th></tr></thead>
+      <tbody>
+        {% for m in staff %}
+        <tr>
+          <td><strong>{{ m.staff_number }}</strong></td>
+          <td>{{ m.user.get_full_name }}</td>
+          <td>{{ m.position }}</td>
+          <td>{{ m.office }}</td>
+          <td>{{ m.num_assigned }}</td>
+          {% url 'accounts:staff_detail' m.pk as view_url %}
+          {% url 'accounts:staff_update' m.pk as edit_url %}
+          {% url 'accounts:staff_delete' m.pk as delete_url %}
+          {% include "actions.html" %}
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No staff yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

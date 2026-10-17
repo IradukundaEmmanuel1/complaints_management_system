@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ member.user.get_full_name }}{% endblock %}
+{% block page_title %}{{ member.user.get_full_name }}{% endblock %}
+{% block page_actions %}
+  <a href="{% url 'accounts:staff_update' member.pk %}" class="btn btn-warning"><i class="fas fa-edit mr-1"></i> Edit</a>
+  <a href="{% url 'accounts:staff_delete' member.pk %}" class="btn btn-danger"><i class="fas fa-trash mr-1"></i> Delete</a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    <div class="card card-primary card-outline">
+      <div class="card-body box-profile">
+        <div class="text-center mb-2"><i class="fas fa-user-tie fa-3x text-warning"></i></div>
+        <h3 class="profile-username text-center">{{ member.user.get_full_name }}</h3>
+        <p class="text-muted text-center">{{ member.position }}</p>
+        <ul class="list-group list-group-unbordered mb-0">
+          <li class="list-group-item"><b>Staff number</b> <span class="float-right">{{ member.staff_number }}</span></li>
+          <li class="list-group-item"><b>Office</b> <span class="float-right">{{ member.office }}</span></li>
+          <li class="list-group-item"><b>Username</b> <span class="float-right">{{ member.user.username }}</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header"><h3 class="card-title">Assigned Complaints</h3></div>
+      <div class="card-body p-0 table-responsive">
+        <table class="table table-striped table-compact mb-0">
+          <thead><tr><th>Reference</th><th>Title</th><th>Student</th><th>Status</th></tr></thead>
+          <tbody>
+            {% for c in complaints %}
+            <tr><td class="text-nowrap"><a href="{% url 'complaints:complaint_detail' c.pk %}">{{ c.reference }}</a></td><td>{{ c.title }}</td><td>{{ c.student.user.get_full_name }}</td>
+                <td>{% include "complaints/status_badge.html" with status=c.status label=c.get_status_display %}</td></tr>
+            {% empty %}<tr><td colspan="4">No complaints assigned.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<a href="{% url 'accounts:staff_list' %}" class="btn btn-default"><i class="fas fa-arrow-left mr-1"></i> Back to staff</a>
+{% endblock %}

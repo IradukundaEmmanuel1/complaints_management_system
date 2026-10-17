@@ -1,0 +1,59 @@
+/* theme.css: our own small style file, loaded AFTER AdminLTE.
+   It changes AdminLTE's default colours to navy blue and amber. */
+
+:root {
+  --theme-main: #1F3A68;
+  --theme-main-light: #2C5AA0;
+  --theme-accent: #F0A500;
+}
+
+/* ---- Sidebar ---- */
+.main-sidebar { background-color: #13284a !important; }
+.brand-link { border-bottom: 1px solid rgba(201, 162, 39, .5) !important; }
+.brand-link .brand-text { color: var(--theme-accent) !important; font-weight: 600 !important; }
+.nav-sidebar .nav-header { color: var(--theme-accent) !important; font-size: .75rem; letter-spacing: 1px; }
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  background-color: var(--theme-accent) !important; color: #1f1f1f !important;
+}
+
+/* ---- Buttons ---- */
+.btn-primary { background-color: var(--theme-main); border-color: var(--theme-main); }
+.btn-primary:hover, .btn-primary:focus { background-color: var(--theme-main-light); border-color: var(--theme-main-light); }
+.card-primary:not(.card-outline) > .card-header { background-color: var(--theme-main); }
+.card-primary.card-outline { border-top-color: var(--theme-main); }
+
+/* ---- Dashboard header banner ---- */
+.page-banner {
+  background: linear-gradient(120deg, var(--theme-main) 0%, var(--theme-main-light) 70%, #3b6fc4 100%);
+  border-left: 6px solid var(--theme-accent);
+  border-radius: .5rem; color: #fff; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
+}
+.page-banner h2 { margin: 0; font-weight: 700; }
+.page-banner .subtitle { color: #e6edf8; margin: .25rem 0 0; }
+.page-banner .btn-accent { background: var(--theme-accent); color: #1f1f1f; border: none; font-weight: 600; }
+.page-banner .btn-accent:hover { background: #ffb81c; }
+.page-banner .btn-outline-light { font-weight: 600; }
+
+/* ---- Summary cards ---- */
+.small-box { border-radius: .5rem; }
+.bg-theme-main { background-color: var(--theme-main) !important; color: #fff !important; }
+.bg-theme-accent { background-color: var(--theme-accent) !important; color: #1f1f1f !important; }
+.small-box.bg-theme-accent .small-box-footer { color: #1f1f1f !important; }
+
+/* ---- Tables ---- */
+.table td, .table th { vertical-align: middle; }
+.table-compact td, .table-compact th { padding: .55rem .75rem; }
+.progress-thin { height: 6px; border-radius: 3px; margin-bottom: 2px; }
+
+/* ---- Action buttons: always on ONE line ---- */
+.actions { white-space: nowrap; width: 1%; }
+.actions .btn { min-width: 70px; }
+
+/* ---- Tag checkboxes on the complaint form ---- */
+#id_tags div { display: inline-block; margin-right: 1.25rem; }
+#id_tags label { font-weight: normal; }
+
+/* ---- Conversation on the complaint page ---- */
+.reply { border-left: 4px solid #dee2e6; padding: .5rem .75rem; margin-bottom: .75rem; background: #fff; border-radius: .25rem; }
+.reply.staff { border-left-color: var(--theme-accent); }
+.reply .meta { font-size: .85rem; color: #6c757d; }
